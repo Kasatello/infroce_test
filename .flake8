@@ -10,3 +10,5 @@ exclude =
     tests
     config/settings.py
     manage.py
+    test
+    employee/admin.py

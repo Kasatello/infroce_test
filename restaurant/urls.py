@@ -17,7 +17,11 @@ router.register("votes", VoteViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("generate_menu/", GenerateMenu.as_view(), name="generate_menu"),
-    path("menu_result/<int:menu_id>", MenuResult.as_view(), name="menu_result"),
+    path(
+        "menu_result/<int:menu_id>",
+        MenuResult.as_view(),
+        name="menu_result"
+    ),
 ]
 
 app_name = "restaurant"
