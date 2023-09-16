@@ -94,6 +94,3 @@ def test_menu_results_view(api_client, employee_user, menu_instance, vote_instan
             {"dishes": "Test Dish", "avg_rating": Decimal("4.0"), "menus_sold": 1}
         ]
     }
-
-
-# Add more tests as needed
