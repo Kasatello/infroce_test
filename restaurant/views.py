@@ -6,27 +6,34 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser
+)
 from rest_framework.decorators import action
 
 from restaurant.models import Restaurant, Menu, Vote
-from restaurant.serializers import RestaurantSerializer, MenuSerializer, VoteSerializer
+from restaurant.serializers import (
+    RestaurantSerializer,
+    MenuSerializer,
+    VoteSerializer
+)
 
 
 class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 class GenerateMenu(views.APIView):
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
     def post(self, request):
         dishes = ["Pizza", "Sushi", "Borsch", "Caesar", "Vareniky"]
@@ -48,7 +55,7 @@ class GenerateMenu(views.APIView):
 
 
 class MenuResult(views.APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, menu_id):
         menu_obj = get_object_or_404(Menu, pk=menu_id)
@@ -85,18 +92,23 @@ class VoteViewSet(viewsets.ModelViewSet):
         try:
             menu = Menu.objects.get(pk=menu_id)
         except Menu.DoesNotExist:
-            return Response({"detail": "Menu not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"detail": "Menu not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         vote = Vote(menu=menu, user=request.user)
 
         rating = request.data.get("rating")
 
         if rating is None:
-            return Response({"detail": "Rating is required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Rating is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         vote.rating = rating
         vote.save()
 
         serializer = VoteSerializer(vote)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
