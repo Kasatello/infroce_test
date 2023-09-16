@@ -6,11 +6,13 @@ from restaurant.views import (
     MenuViewSet,
     GenerateMenu,
     MenuResult,
+    VoteViewSet,
 )
 
 router = routers.DefaultRouter()
 router.register("restaurants", RestaurantViewSet)
 router.register("menus", MenuViewSet)
+router.register("votes", VoteViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
