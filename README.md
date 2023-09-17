@@ -16,6 +16,7 @@
     POSTGRES_PASSWORD=your db password
     ```
  ### 3. To run it locally
+> **Warning:** Don't use .env file if You run it locally
 1. Create virtual environment and activate it:
    * Tooltip for windows:
      - ```python -m venv venv``` 
